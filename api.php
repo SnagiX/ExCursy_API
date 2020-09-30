@@ -26,5 +26,18 @@
 
     */
 
-    echo "Hello, world!";
+    // Enable this when you publishing api in master branch
+    error_reporting(0);
+
+    // Turn on / off api:
+    define("IS_ROOT_ACTIVE", true);
+
+    if (IS_ROOT_ACTIVE !== true) {
+        header("HTTP/1.0 503 Service Unavailable");
+        die();
+    }
+    
+    // Import core:
+    require_once "core/root.php";
+
 ?>
