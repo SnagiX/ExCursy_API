@@ -27,12 +27,12 @@
     */
 
     // Enable this when you publishing api in master branch
-    error_reporting(0);
+    // error_reporting(0);
 
     // Turn on / off api:
-    define("IS_ROOT_ACTIVE", true);
+    define("API_ON", true);
 
-    if (IS_ROOT_ACTIVE !== true) {
+    if (API_ON !== true) {
         header("HTTP/1.0 503 Service Unavailable");
         die();
     }

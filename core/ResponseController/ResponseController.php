@@ -21,6 +21,19 @@
                 return 1;
             
         }
+
+        // Get type of response:
+        //
+        // Attributes:
+        // $attr_name : str     title of root "type" name
+        //
+        // Returns:
+        // 0 - falied
+        // : str - completed 
+        public function getTypeOfResponse($attr_name = "type") {
+            if (gettype($this->responses["get"][$attr_name]) == "NULL") return null;
+            return $this->responses["get"][$attr_name];
+        }
     }
 
 ?>
