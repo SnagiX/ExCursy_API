@@ -42,7 +42,7 @@
             // get .patt code of marker's id:
             case 'marker_patt':
                 $markerPattController->buildMarkerPatternById(1);
-                $outputController->applyHeader();
+                // $outputController->applyHeader();
             break;
             
             default:
