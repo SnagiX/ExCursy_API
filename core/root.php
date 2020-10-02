@@ -42,15 +42,17 @@
             // get .patt code of marker's id:
             case 'marker_patt':
                 $markerPattController->buildMarkerPatternById(1);
-                // $outputController->applyHeader();
             break;
-            
+            // Send emails to us:
+            case 'landing_email':
+
+            break;
+
             default:
                 $errorController->throwError("Invalid argument(s)");
-                $outputController->applyHeader();
             break;
         }
-        
+        // $outputController->applyHeader();
         
     }
 ?>
