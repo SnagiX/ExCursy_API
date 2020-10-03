@@ -30,9 +30,12 @@
     // error_reporting(0);
 
     // Turn on / off api:
-    define("API_ON", true);
+    define("SN_API_ON", true);
 
-    if (API_ON !== true) {
+    // Init root directory:
+    define("SN_DIRECTORY_ROOT", __DIR__."/");
+
+    if (SN_API_ON !== true) {
         header("HTTP/1.0 503 Service Unavailable");
         die();
     }
