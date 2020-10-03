@@ -11,6 +11,9 @@
         // LangController:
         require_once SN_DIRECTORY_ROOT."core/controllers/LangController/LangController.php";
 
+        // DbController:
+        require_once SN_DIRECTORY_ROOT."core/controllers/DbController/DbController.php";
+
         // Marker_patt:
         require_once SN_DIRECTORY_ROOT."core/controllers/MarkerPattController/MarkerPattController.php";
 
@@ -30,6 +33,9 @@
         $langController->addLanguage("ru");
         $langController->addLanguage("en");
 
+        // Db:
+        $dbController = new DbController(SN_CONFIG_ROOT);
+
         // Marker_patts:
         $markerPattController = new MarkerPattController();
 
@@ -46,7 +52,7 @@
 
     if (gettype($typeOfResponse) != null) {
         
-        $outputController->applyHeader();
+        $outputController->applyHeaders();
 
         switch ($typeOfResponse) {
             // get .patt code of marker's id:
@@ -74,6 +80,14 @@
 
                 unset($res);
                 
+            break;
+            case 'get_all_markers':
+                $res = $dbController->getAllMarkers();
+
+                $outputController->addField("markers", $res);
+
+                $outputController->show(false);
+
             break;
             // Send emails to us:
             case 'landing_email':
