@@ -21,7 +21,7 @@
 
             $this->headers = [
                 "Content-Type" => "Content-Type: ".$this->outputFormat,
-                "Access-Control-Allow-Origin"
+                "Access-Control-Allow-Origin: *"
             ];
         }
 
