@@ -33,11 +33,11 @@
         $langController->addLanguage("ru");
         $langController->addLanguage("en");
 
-        // Db:
-        $dbController = new DbController(SN_CONFIG_ROOT);
-
         // Marker_patts:
         $markerPattController = new MarkerPattController();
+
+        // Db:
+        $dbController = new DbController(SN_CONFIG_ROOT);
 
     // =====================================================
 
