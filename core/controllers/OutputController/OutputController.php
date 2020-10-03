@@ -20,7 +20,8 @@
             // Set headers:
 
             $this->headers = [
-                "Content-Type" => "Content-Type: ".$this->outputFormat
+                "Content-Type" => "Content-Type: ".$this->outputFormat,
+                "Access-Control-Allow-Origin"
             ];
         }
 
@@ -61,7 +62,10 @@
         }
 
         public function applyHeaders() {
-            header("Content-Type: ".$this->outputFormat);
+            foreach ($this->headers as $val) {
+                header($val);
+            }
+            
             return 1;
         }
 
