@@ -1,0 +1,10 @@
+{
+    "mysql": {
+        "host": "",
+        "username": "",
+        "password": "",
+        "db": "",
+        "charset": "utf8mb4",
+        "port": 3306
+    }
+}
