@@ -41,6 +41,8 @@
             $this->markers["config"] = dbObject::table("sn_exkyrsia_config")::ArrayBuilder()->get();
             $this->markers["info"] = dbObject::table("sn_exkyrsia_info")::ArrayBuilder()->get();
 
+            $markerPattController = new MarkerPattController();
+
             $prepared = [];
 
             foreach ($this->markers["root"] as $key => $value) {
@@ -49,6 +51,7 @@
                     "id" => $value["id"],
                     "info" => $this->markers["info"][$key],
                     "config" => $this->markers["config"][$key],
+                    "pattern" => $markerPattController->getMarkerPatternById($value["id"]),
                     "childnodes" => []
                 ];
 
