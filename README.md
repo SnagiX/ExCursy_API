@@ -12,4 +12,10 @@ ExKyrisa API for actions in GitHub pages (upload markers, send some data, etc.)
         "charset": "utf8mb4",
         "port": 3306
     }`
+    You also can set your headers (or remove CORS for example):
+    `"headers_prepared": {
+        "Access-Control-Allow-Origin: *",
+        "Access-Control-Allow-Methods: GET, POST"
+    }`
+
 3. Add templates of tables on your server (or virtual machine)

@@ -1,6 +1,6 @@
 <?php
 
-    class OutputController {
+    class OutputController extends SnController {
 
         public $outputFormat = "text/json";
 
@@ -10,20 +10,34 @@
             "type" => ""
         ];
 
-        public function __construct($outputFormat = "text/json") {
+        public function __construct($config_output, $outputFormat = "text/json") {
+
+            // Set config:
+
+            $this->config = $config_output; 
 
             // Set output format:
 
-            $this->outputFormat = $outputFormat;
-            $textToOutput["type"] = "response";
+            $this->changeOutputFormat($outputFormat);
 
             // Set headers:
 
-            $this->headers = [
+            $this->headers += [
                 "Content-Type" => "Content-Type: ".$this->outputFormat,
-                "Access-Control-Allow-Origin: *"
             ];
+
+            // Set headers from config:
+
+            foreach ($this->config["headers_prepared"] as $value) {
+                array_push($this->headers, $value);
+            }
+
         }
+
+        //
+        // PUBLIC FUNCTIONS //
+        //
+
 
         // Function to change output format:
         public function changeOutputFormat($out_name) {
@@ -37,11 +51,13 @@
             return 1;
         }
 
+
         // Add new field into textToOutput:
         public function addField($title, $value) {
             $this->textToOutput[$title] = $value;
             return 1;
         }
+
         
         // Show prepared textToOutput:
         public function show($isDie = true) {
@@ -61,6 +77,8 @@
             $this->dieCondition($isDie);
         }
 
+
+        // Apply your headers:
         public function applyHeaders() {
             foreach ($this->headers as $val) {
                 header($val);
@@ -68,6 +86,7 @@
             
             return 1;
         }
+
 
         // Throw basic error:
         public function throwError($text, $isDie = true, $code = -1) {
@@ -89,9 +108,12 @@
             return 1;
         }
 
-
+        //
         // PROTECTED FUNCTIONS //
+        //
 
+
+        // Die condition:
         protected function dieCondition($condition) {
             if ($condition) die();
             return 0;

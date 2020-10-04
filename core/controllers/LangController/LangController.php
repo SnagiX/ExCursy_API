@@ -1,6 +1,6 @@
 <?php
 
-    class LangController {
+    class LangController extends SnController {
 
         public $langs = [];
 

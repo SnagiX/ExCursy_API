@@ -31,7 +31,7 @@
     */
 
     // Enable this when you publishing api in master branch
-    error_reporting(0);
+    // error_reporting(0);
 
     // Turn on / off api:
     define("SN_API_ON", true);
@@ -40,7 +40,23 @@
     define("SN_DIRECTORY_ROOT", __DIR__."/");
 
     // Init system config:
-    define("SN_CONFIG_ROOT", SN_DIRECTORY_ROOT."core/config/config.json");
+    define("SN_DIRECTORY_CONFIG", SN_DIRECTORY_ROOT."core/config/config.json");
+
+    // Open prepared config:
+
+    // ============= //
+
+    $handle = fopen(SN_DIRECTORY_CONFIG, "r");
+    $config = fread($handle, filesize(SN_DIRECTORY_CONFIG));
+
+    // Config const
+    define("SN_CONFIG", json_decode($config, true));
+
+    fclose($handle);
+    unset($config);
+    unset($handle);
+
+    // ============= //
 
     if (SN_API_ON !== true) {
         header("HTTP/1.0 503 Service Unavailable");

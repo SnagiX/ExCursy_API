@@ -7,9 +7,7 @@
         // MysqliDb -> dbObject:
         require_once SN_DIRECTORY_ROOT."libs/PHP-MySQLi-Database-Class/dbObject.php";
 
-    class DbController {
-
-        protected $config;
+    class DbController extends SnController {
 
         protected $MysqliDb;
 
@@ -20,15 +18,17 @@
             "childnodes" => ""
         ];
 
-        public function __construct($json_config_path) {
+        public function __construct($config_db) {
 
-            $handle = fopen($json_config_path, "r");
+            // Set config:
 
-            $data = fread($handle, filesize($json_config_path));
+            $this->config = $config_db;
 
-            $this->config = json_decode($data, true);
+            // Init MysqlDb:
 
             $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+
+            // Enable autoload:
 
             dbObject::autoload("models");
             
