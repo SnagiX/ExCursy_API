@@ -20,13 +20,11 @@
             "childnodes" => ""
         ];
 
-        public function __construct($json_config_path) {
+        public function __construct($config_db) {
 
-            $handle = fopen($json_config_path, "r");
+            // Set config:
 
-            $data = fread($handle, filesize($json_config_path));
-
-            $this->config = json_decode($data, true);
+            $this->config = $config_db;
 
             $this->MysqliDb = new MysqliDb($this->config["mysql"]);
 

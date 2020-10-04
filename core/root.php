@@ -17,7 +17,6 @@
         // Marker_patt:
         require_once SN_DIRECTORY_ROOT."core/controllers/MarkerPattController/MarkerPattController.php";
 
-
     // Create controllers:
         
         // Response management:
@@ -26,7 +25,7 @@
         $responseController->setResponse("post", $_POST);
 
         // Output:
-        $outputController = new OutputController("text/json");
+        $outputController = new OutputController(SN_CONFIG["OutputController"], "text/json");
 
         // Language:
         $langController = new LangController();
@@ -37,7 +36,7 @@
         $markerPattController = new MarkerPattController();
 
         // Db:
-        $dbController = new DbController(SN_CONFIG_ROOT);
+        $dbController = new DbController(SN_CONFIG["DbController"]);
 
     // =====================================================
 

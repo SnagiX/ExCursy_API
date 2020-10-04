@@ -2,6 +2,8 @@
 
     class OutputController {
 
+        public $config;
+
         public $outputFormat = "text/json";
 
         public $headers = [];
@@ -10,20 +12,33 @@
             "type" => ""
         ];
 
-        public function __construct($outputFormat = "text/json") {
+        public function __construct($config_output, $outputFormat = "text/json") {
+
+            // Set config:
+
+            $this->config = $config_output; 
 
             // Set output format:
 
-            $this->outputFormat = $outputFormat;
-            $textToOutput["type"] = "response";
+            $this->changeOutputFormat($outputFormat);
 
             // Set headers:
 
-            $this->headers = [
+            $this->headers += [
                 "Content-Type" => "Content-Type: ".$this->outputFormat,
-                "Access-Control-Allow-Origin: *"
             ];
+
+            // Set headers from config:
+
+            foreach ($this->config["headers_prepared"] as $value) {
+                array_push($this->headers, $value);
+            }
+
         }
+
+        //
+        // PUBLIC FUNCTIONS //
+        //
 
         // Function to change output format:
         public function changeOutputFormat($out_name) {
@@ -89,8 +104,9 @@
             return 1;
         }
 
-
+        //
         // PROTECTED FUNCTIONS //
+        //
 
         protected function dieCondition($condition) {
             if ($condition) die();
