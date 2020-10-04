@@ -2,6 +2,10 @@
 
     // Controllers
 
+        // Main controller (SnController) (: SYSTEM):
+        require_once SN_DIRECTORY_ROOT."core/system/SnController/SnController.php";
+
+
         // ResponseController:
         require_once SN_DIRECTORY_ROOT."core/controllers/ResponseController/ResponseController.php";
 

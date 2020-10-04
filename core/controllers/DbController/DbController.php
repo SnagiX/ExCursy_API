@@ -7,9 +7,7 @@
         // MysqliDb -> dbObject:
         require_once SN_DIRECTORY_ROOT."libs/PHP-MySQLi-Database-Class/dbObject.php";
 
-    class DbController {
-
-        protected $config;
+    class DbController extends SnController {
 
         protected $MysqliDb;
 
@@ -26,7 +24,11 @@
 
             $this->config = $config_db;
 
+            // Init MysqlDb:
+
             $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+
+            // Enable autoload:
 
             dbObject::autoload("models");
             

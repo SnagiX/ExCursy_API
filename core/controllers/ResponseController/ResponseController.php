@@ -1,6 +1,6 @@
 <?php
 
-    class ResponseController {
+    class ResponseController extends SnController {
 
         public $responses = [
             "get" => null,

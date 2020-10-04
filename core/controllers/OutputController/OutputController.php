@@ -1,8 +1,6 @@
 <?php
 
-    class OutputController {
-
-        public $config;
+    class OutputController extends SnController {
 
         public $outputFormat = "text/json";
 
@@ -40,6 +38,7 @@
         // PUBLIC FUNCTIONS //
         //
 
+
         // Function to change output format:
         public function changeOutputFormat($out_name) {
             if ($out_name == null) return 0; 
@@ -52,11 +51,13 @@
             return 1;
         }
 
+
         // Add new field into textToOutput:
         public function addField($title, $value) {
             $this->textToOutput[$title] = $value;
             return 1;
         }
+
         
         // Show prepared textToOutput:
         public function show($isDie = true) {
@@ -76,6 +77,8 @@
             $this->dieCondition($isDie);
         }
 
+
+        // Apply your headers:
         public function applyHeaders() {
             foreach ($this->headers as $val) {
                 header($val);
@@ -83,6 +86,7 @@
             
             return 1;
         }
+
 
         // Throw basic error:
         public function throwError($text, $isDie = true, $code = -1) {
@@ -108,6 +112,8 @@
         // PROTECTED FUNCTIONS //
         //
 
+
+        // Die condition:
         protected function dieCondition($condition) {
             if ($condition) die();
             return 0;

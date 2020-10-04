@@ -1,6 +1,6 @@
 <?php
 
-    class MarkerPattController {
+    class MarkerPattController extends SnController {
 
         public function __construct() {
             
