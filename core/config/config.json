@@ -18,5 +18,12 @@
             "Access-Control-Allow-Methods: GET, POST"
         ]
 
+    },
+    "LangController": {
+        "path": "core/lang/",
+        "languages": [
+            "en", "ru"
+        ],
+        "default_lang": "en"
     }
 }

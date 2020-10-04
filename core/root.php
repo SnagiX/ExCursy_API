@@ -32,9 +32,7 @@
         $outputController = new OutputController(SN_CONFIG["OutputController"], "text/json");
 
         // Language:
-        $langController = new LangController();
-        $langController->addLanguage("ru");
-        $langController->addLanguage("en");
+        $langController = new LangController(SN_CONFIG["LangController"]);
 
         // Marker_patts:
         $markerPattController = new MarkerPattController();
@@ -44,65 +42,92 @@
 
     // =====================================================
 
-    // Let's decide, what the action we need to do:
-    $typeOfResponse = $responseController->getAttrubuteValue("type", "get");
+    // Apply our headers:
+    $outputController->applyHeaders();
 
-    // if "lang" exists, change current lang.:
-    // 
-    // In next time :)
+    // =====================================================
+
     //
-    // $language = $responseController->getAttrubuteValue("lang", "get");
+    // ATTRIBUTES - NOT IMPORTANT
+    //
 
-    if (gettype($typeOfResponse) != null) {
+    // Set language:
+
+    if ($responseController->getAttrubuteValue("lang", "get") !== null) {
+
+        // Get lang attr:
         
-        $outputController->applyHeaders();
+        $langController->currentLang = $responseController->getAttrubuteValue("lang", "get");
 
-        switch ($typeOfResponse) {
-            // get .patt code of marker's id:
-            case 'marker_patt':
-
-                $res = $responseController->getAttrubuteValue("marker_id", "get");
-
-                if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
-
-                    $patt = $markerPattController->getMarkerPatternById($res);
-
-                    if (!$patt) $outputController->throwError("Invalid value for marker_id", true);
-
-                    $outputController->addField("marker", [
-                        "id" => $res,
-                        "value" => $patt
-                    ]);
-
-                    $outputController->show(false);
-
-                    unset($patt);
-                } else {
-                    $outputController->throwError("marker_id value excepts", true);
-                }
-
-                unset($res);
-                
-            break;
-            case 'get_all_markers':
-                $res = $dbController->getAllMarkers();
-
-                $outputController->addField("markers", $res);
-
-                $outputController->show(false);
-
-            break;
-            // Send emails to us:
-            case 'landing_email':
-                $outputController->throwError("Function is unavailable", true);
-            break;
-
-            default:
-                $outputController->throwError("Invalid argument(s)", true);
-            break;
+        $res = $langController->setLanguage($langController->currentLang);
+        
+        if (!$res) {
+            $outputController->throwError($langController->lang["errors"][4], true);
         }
+
+        unset($res);
 
     }
 
+    //
+    // ATTRIBUTES - IMPORTANT
+    //
+
+    // Switch for "type" argument (main (!) argument)
+
+        // Let's decide, what the action we need to do:
+        $responseController->typeOfResponse = $responseController->getAttrubuteValue("type", "get");
+
+        // If argument is empty, throw error:
+        if (!isset($responseController->typeOfResponse)) $outputController->throwError($langController->lang["errors"][1]);
+
+    switch ($responseController->typeOfResponse) {
+
+        // get .patt code of marker's id:
+        case 'marker_patt':
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+
+                $patt = $markerPattController->getMarkerPatternById($res);
+
+                if (!$patt) $outputController->throwError($langController->lang["errors"][2], true);
+
+                $outputController->addField("marker", [
+                    "id" => $res,
+                    "value" => $patt
+                ]);
+
+                $outputController->show(false);
+
+                unset($patt);
+            } else {
+                $outputController->throwError($langController->lang["errors"][3], true);
+            }
+
+            unset($res);
+            
+        break;
+
+        // Show all markers:
+        case 'get_all_markers':
+            $res = $dbController->getAllMarkers();
+
+            $outputController->addField("markers", $res);
+
+            $outputController->show(false);
+
+        break;
+
+        // Send emails to us:
+        case 'landing_email':
+            $outputController->throwError($langController->lang["errors"][0], true);
+        break;
+
+        default:
+            $outputController->throwError($langController->lang["errors"][1], true);
+        break;
+    }
     
 ?>
