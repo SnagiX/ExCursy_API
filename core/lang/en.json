@@ -1,8 +1,9 @@
 {
     "errors": {
         "0": "Function is unavailable",
-        "1": "Invalid argument(s)",
+        "1": "Important argument(s) doesn't exist",
         "2": "Invalid value for marker_id",
-        "3": "marker_id value excepts"
+        "3": "marker_id value excepts",
+        "4": "Wrong language parameter"
     }
 }
