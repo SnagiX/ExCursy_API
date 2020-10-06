@@ -12,6 +12,9 @@
         // OutputController:
         require_once SN_DIRECTORY_ROOT."core/controllers/OutputController/OutputController.php";
 
+        // NetworkController:
+        require_once SN_DIRECTORY_ROOT."core/controllers/NetworkController/NetworkController.php";
+
         // LangController:
         require_once SN_DIRECTORY_ROOT."core/controllers/LangController/LangController.php";
 
@@ -24,12 +27,24 @@
     // Create controllers:
         
         // Response management:
-        $responseController = new ResponseController();
-        $responseController->setResponse("get", $_GET);
-        $responseController->setResponse("post", $_POST);
+        $responseController = new ResponseController([
+            "get" => $_GET,
+            "post" => $_POST,
+            "filter_enable" => true,
+            "filter_args" => [
+                "get" => [
+                    "marker_id" => ["filter" => FILTER_SANITIZE_NUMBER_INT],
+                    "type" => ["filter" => FILTER_SANITIZE_STRING],
+                    "lang" => ["filter" => FILTER_SANITIZE_STRING]
+                ]
+            ]
+        ]);
 
         // Output:
         $outputController = new OutputController(SN_CONFIG["OutputController"], "text/json");
+
+        // Network:
+        $networkController = new NetworkController();
 
         // Language:
         $langController = new LangController(SN_CONFIG["LangController"]);
@@ -38,12 +53,20 @@
         $markerPattController = new MarkerPattController();
 
         // Db:
-        $dbController = new DbController(SN_CONFIG["DbController"]);
+        $dbController = new DbController(SN_CONFIG["DbController"], [
+            "root" => "",
+            "info" => "",
+            "config" => "",
+            "childnodes" => ""
+        ]);
 
     // =====================================================
 
     // Apply our headers:
     $outputController->applyHeaders();
+
+    // Check if Db has no connection:
+    if (!empty($dbController->errors)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 5, "isDie" => true]);
 
     // =====================================================
 
@@ -61,9 +84,7 @@
 
         $res = $langController->setLanguage($langController->currentLang);
         
-        if (!$res) {
-            $outputController->throwError($langController->lang["errors"][4], true);
-        }
+        if (!$res) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 4, "isDie" => true]);
 
         unset($res);
 
@@ -79,7 +100,7 @@
         $responseController->typeOfResponse = $responseController->getAttrubuteValue("type", "get");
 
         // If argument is empty, throw error:
-        if (!isset($responseController->typeOfResponse)) $outputController->throwError($langController->lang["errors"][1]);
+        if (!isset($responseController->typeOfResponse)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
 
     switch ($responseController->typeOfResponse) {
 
@@ -92,7 +113,7 @@
 
                 $patt = $markerPattController->getMarkerPatternById($res);
 
-                if (!$patt) $outputController->throwError($langController->lang["errors"][2], true);
+                if (!$patt) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 2, "isDie" => true]);
 
                 $outputController->addField("marker", [
                     "id" => $res,
@@ -103,7 +124,7 @@
 
                 unset($patt);
             } else {
-                $outputController->throwError($langController->lang["errors"][3], true);
+                $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
             }
 
             unset($res);
@@ -122,11 +143,11 @@
 
         // Send emails to us:
         case 'landing_email':
-            $outputController->throwError($langController->lang["errors"][0], true);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 0, "isDie" => true]);
         break;
 
         default:
-            $outputController->throwError($langController->lang["errors"][1], true);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
         break;
     }
     

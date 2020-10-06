@@ -89,14 +89,26 @@
 
 
         // Throw basic error:
-        public function throwError($text, $isDie = true, $code = -1) {
+        // Arguments for $args:
+        // $args["arr"] : arr     array of errors
+        // $args["code"] : int      code of error
+        // $args["isDie"] : bool    to Die() or not
+        public function throwError($args = []) {
 
-            if (empty($text)) return 0;
+            if (empty($args["arr"]) || empty($args["code"])) return 0;
+            if (!is_array($args["arr"])) return 0;
+
+            // Prepared text
+            $text = "Unknown error";
+
+            foreach ($args["arr"] as $i => $str) {
+                if ($i == $args["code"]) $text = $args["arr"][$i];
+            }
 
             $this->textToOutput = [];
 
             $this->textToOutput["type"] = "error";
-            $this->textToOutput["error"] = ["code" => $code, "why" => $text];
+            $this->textToOutput["error"] = ["code" => $args["code"], "why" => $text];
             
             if ($this->outputFormat = "text/json") {
                 echo json_encode($this->textToOutput);
@@ -104,7 +116,7 @@
 
             // Die
 
-            $this->dieCondition($isDie);
+            $this->dieCondition($args["isDie"]);
             return 1;
         }
 

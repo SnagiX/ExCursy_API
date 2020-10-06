@@ -7,57 +7,65 @@
         // MysqliDb -> dbObject:
         require_once SN_DIRECTORY_ROOT."libs/PHP-MySQLi-Database-Class/dbObject.php";
 
+        // SnCache (cache):
+        require_once SN_DIRECTORY_ROOT."libs/SnCache/SnCache.php";
+
     class DbController extends SnController {
 
         protected $MysqliDb;
 
-        protected $markers = [
-            "root" => "",
-            "info" => "",
-            "config" => "",
-            "childnodes" => ""
-        ];
+        protected $SnCache;
 
-        public function __construct($config_db) {
+        public $errors = [];
+
+        protected $tables = [];
+
+        public function __construct($config_db, $tables) {
+
+            // Set tables:
+                $this->tables = $tables;
 
             // Set config:
-
-            $this->config = $config_db;
+                $this->config = $config_db;
 
             // Init MysqlDb:
+                $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+                
+                $this->getError();
 
-            $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+                // Enable autoload:
 
-            // Enable autoload:
+                dbObject::autoload("models");
 
-            dbObject::autoload("models");
+            // Init SnCache:
+                $this->SnCache = new SnCache(SN_DIRECTORY_ROOT."core/cache/", ".tmp");
             
         }
 
         public function getAllMarkers() {
             
-            $this->markers["root"] = dbObject::table("sn_exkyrsia")::ArrayBuilder()->get();
-            $this->markers["childnodes"] = dbObject::table("sn_exkyrsia_childnodes")::ArrayBuilder()->get();
-            $this->markers["config"] = dbObject::table("sn_exkyrsia_config")::ArrayBuilder()->get();
-            $this->markers["info"] = dbObject::table("sn_exkyrsia_info")::ArrayBuilder()->get();
+            $this->tables["root"] = dbObject::table("sn_exkyrsia")::ArrayBuilder()->get();
+            $this->tables["childnodes"] = dbObject::table("sn_exkyrsia_childnodes")::ArrayBuilder()->get();
+            $this->tables["config"] = dbObject::table("sn_exkyrsia_config")::ArrayBuilder()->get();
+            $this->tables["info"] = dbObject::table("sn_exkyrsia_info")::ArrayBuilder()->get();
 
             $markerPattController = new MarkerPattController();
 
             $prepared = [];
 
-            foreach ($this->markers["root"] as $key => $value) {
+            foreach ($this->tables["root"] as $key => $value) {
 
                 $prepared[$key] = [
                     "id" => $value["id"],
-                    "info" => $this->markers["info"][$key],
-                    "config" => $this->markers["config"][$key],
+                    "info" => $this->tables["info"][$key],
+                    "config" => $this->tables["config"][$key],
                     "pattern" => $markerPattController->getMarkerPatternById($value["id"]),
                     "childnodes" => []
                 ];
 
                 // ChildNodes:
 
-                foreach ($this->markers["childnodes"] as $c_key => $c_val) {
+                foreach ($this->tables["childnodes"] as $c_key => $c_val) {
                     if ($value["id"] == $c_val["id"]) {
                         $prepared[$key]["childnodes"][$c_key] = [];
                         $prepared[$key]["childnodes"][$c_key] += $c_val;
@@ -65,6 +73,21 @@
                 }
 
             }
+            return $prepared;
+        }
+
+        //
+        // PROTECTED FUNCTIONS
+        //
+
+        protected function getError() {
+
+            if ($this->MysqliDb->getLastErrno() == 0) return 1;
+
+            $prepared = [$this->MysqliDb->getLastErrno() => $this->MysqliDb->getLastError()];
+
+            $this->errors += $prepared;
+
             return $prepared;
         }
     }
