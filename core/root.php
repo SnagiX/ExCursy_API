@@ -12,6 +12,9 @@
         // OutputController:
         require_once SN_DIRECTORY_ROOT."core/controllers/OutputController/OutputController.php";
 
+        // NetworkController:
+        require_once SN_DIRECTORY_ROOT."core/controllers/NetworkController/NetworkController.php";
+
         // LangController:
         require_once SN_DIRECTORY_ROOT."core/controllers/LangController/LangController.php";
 
@@ -40,6 +43,9 @@
         // Output:
         $outputController = new OutputController(SN_CONFIG["OutputController"], "text/json");
 
+        // Network:
+        $networkController = new NetworkController();
+
         // Language:
         $langController = new LangController(SN_CONFIG["LangController"]);
 
@@ -47,7 +53,12 @@
         $markerPattController = new MarkerPattController();
 
         // Db:
-        $dbController = new DbController(SN_CONFIG["DbController"]);
+        $dbController = new DbController(SN_CONFIG["DbController"], [
+            "root" => "",
+            "info" => "",
+            "config" => "",
+            "childnodes" => ""
+        ]);
 
     // =====================================================
 
