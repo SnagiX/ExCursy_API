@@ -5,7 +5,8 @@ Front-end AR applications should be created on AR.js library (see ExKyrsia proje
 ## Installation
 1. Put code into your folder
 
-2. In "core/config/config.json" edit mysql information: ```json
+2. In "core/config/config.json" edit mysql information: 
+```json
 "mysql": {
         "host": "yourHost",
         "username": "yourUsername",
@@ -13,9 +14,10 @@ Front-end AR applications should be created on AR.js library (see ExKyrsia proje
         "db": "yourDatabase",
         "charset": "utf8mb4",
         "port": 3306
-    }
+}
 ```
-3. You also can set your custom values in config (remove CORS-headers for example): ```json
+3. You also can set your custom values in config (remove CORS-headers for example): 
+```json
 "headers_prepared": {
         "Access-Control-Allow-Origin: *",
         "Access-Control-Allow-Methods: GET, POST"
