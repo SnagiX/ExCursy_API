@@ -4,6 +4,7 @@
         "1": "Important argument(s) doesn't exist",
         "2": "Invalid value for marker_id",
         "3": "marker_id value excepts",
-        "4": "Wrong language parameter"
+        "4": "Wrong language parameter",
+        "5": "Internal server error"
     }
 }

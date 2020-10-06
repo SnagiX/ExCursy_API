@@ -33,7 +33,7 @@
     */
 
     // Enable this when you publishing api in master branch
-    error_reporting(0);
+    // error_reporting(0);
 
     // Turn on / off api:
     define("SN_API_ON", true);

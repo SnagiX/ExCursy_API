@@ -24,9 +24,18 @@
     // Create controllers:
         
         // Response management:
-        $responseController = new ResponseController();
-        $responseController->setResponse("get", $_GET);
-        $responseController->setResponse("post", $_POST);
+        $responseController = new ResponseController([
+            "get" => $_GET,
+            "post" => $_POST,
+            "filter_enable" => true,
+            "filter_args" => [
+                "get" => [
+                    "marker_id" => ["filter" => FILTER_SANITIZE_NUMBER_INT],
+                    "type" => ["filter" => FILTER_SANITIZE_STRING],
+                    "lang" => ["filter" => FILTER_SANITIZE_STRING]
+                ]
+            ]
+        ]);
 
         // Output:
         $outputController = new OutputController(SN_CONFIG["OutputController"], "text/json");
@@ -44,6 +53,9 @@
 
     // Apply our headers:
     $outputController->applyHeaders();
+    
+    // Check if Db has no connection:
+    if (!empty($dbController->errors)) $outputController->throwError($langController->lang["errors"][5], true);
 
     // =====================================================
 
@@ -61,9 +73,7 @@
 
         $res = $langController->setLanguage($langController->currentLang);
         
-        if (!$res) {
-            $outputController->throwError($langController->lang["errors"][4], true);
-        }
+        if (!$res) $outputController->throwError($langController->lang["errors"][4], true);
 
         unset($res);
 

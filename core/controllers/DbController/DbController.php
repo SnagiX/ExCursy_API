@@ -7,9 +7,16 @@
         // MysqliDb -> dbObject:
         require_once SN_DIRECTORY_ROOT."libs/PHP-MySQLi-Database-Class/dbObject.php";
 
+        // SnCache (cache):
+        require_once SN_DIRECTORY_ROOT."libs/SnCache/SnCache.php";
+
     class DbController extends SnController {
 
         protected $MysqliDb;
+
+        protected $SnCache;
+
+        public $errors = [];
 
         protected $markers = [
             "root" => "",
@@ -22,15 +29,19 @@
 
             // Set config:
 
-            $this->config = $config_db;
+                $this->config = $config_db;
 
             // Init MysqlDb:
+                $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+                
+                $this->getError();
 
-            $this->MysqliDb = new MysqliDb($this->config["mysql"]);
+                // Enable autoload:
 
-            // Enable autoload:
+                dbObject::autoload("models");
 
-            dbObject::autoload("models");
+            // Init SnCache:
+                $this->SnCache = new SnCache(SN_DIRECTORY_ROOT."core/cache/", ".tmp");
             
         }
 
@@ -65,6 +76,21 @@
                 }
 
             }
+            return $prepared;
+        }
+
+        //
+        // PROTECTED FUNCTIONS
+        //
+
+        protected function getError() {
+
+            if ($this->MysqliDb->getLastErrno() == 0) return 1;
+
+            $prepared = [$this->MysqliDb->getLastErrno() => $this->MysqliDb->getLastError()];
+
+            $this->errors += $prepared;
+
             return $prepared;
         }
     }
