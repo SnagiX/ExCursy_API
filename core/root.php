@@ -53,9 +53,9 @@
 
     // Apply our headers:
     $outputController->applyHeaders();
-    
+
     // Check if Db has no connection:
-    if (!empty($dbController->errors)) $outputController->throwError($langController->lang["errors"][5], true);
+    if (!empty($dbController->errors)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 5, "isDie" => true]);
 
     // =====================================================
 
@@ -73,7 +73,7 @@
 
         $res = $langController->setLanguage($langController->currentLang);
         
-        if (!$res) $outputController->throwError($langController->lang["errors"][4], true);
+        if (!$res) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 4, "isDie" => true]);
 
         unset($res);
 
@@ -89,7 +89,7 @@
         $responseController->typeOfResponse = $responseController->getAttrubuteValue("type", "get");
 
         // If argument is empty, throw error:
-        if (!isset($responseController->typeOfResponse)) $outputController->throwError($langController->lang["errors"][1]);
+        if (!isset($responseController->typeOfResponse)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
 
     switch ($responseController->typeOfResponse) {
 
@@ -102,7 +102,7 @@
 
                 $patt = $markerPattController->getMarkerPatternById($res);
 
-                if (!$patt) $outputController->throwError($langController->lang["errors"][2], true);
+                if (!$patt) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 2, "isDie" => true]);
 
                 $outputController->addField("marker", [
                     "id" => $res,
@@ -113,7 +113,7 @@
 
                 unset($patt);
             } else {
-                $outputController->throwError($langController->lang["errors"][3], true);
+                $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
             }
 
             unset($res);
@@ -132,11 +132,11 @@
 
         // Send emails to us:
         case 'landing_email':
-            $outputController->throwError($langController->lang["errors"][0], true);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 0, "isDie" => true]);
         break;
 
         default:
-            $outputController->throwError($langController->lang["errors"][1], true);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
         break;
     }
     
