@@ -143,7 +143,7 @@
 
         // Send emails to us:
         case 'landing_email':
-            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 0, "isDie" => true]);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 6, "isDie" => true]);
         break;
 
         default:
