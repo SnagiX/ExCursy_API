@@ -104,8 +104,32 @@
 
     switch ($responseController->typeOfResponse) {
 
-        // get .patt code of marker's id:
-        case 'marker_patt':
+        // get .patt link of marker's id:
+        case 'pattern_link':
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+                
+                $patt = $markerPattController->getPatternLinkById($res);
+
+                if (!$patt) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 2, "isDie" => true]);
+
+                $outputController->addField("marker", [
+                    "id" => $res,
+                    "link" => $patt
+                ]);
+
+                $outputController->show(true);
+
+            }
+
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+            
+        break;
+
+        // get .patt file of marker's id:
+        case "pattern_file":
 
             $res = $responseController->getAttrubuteValue("marker_id", "get");
 
@@ -120,15 +144,12 @@
                     "value" => $patt
                 ]);
 
-                $outputController->show(false);
+                $outputController->show(true);
 
-                unset($patt);
-            } else {
-                $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
-            }
+            }  
 
-            unset($res);
-            
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+
         break;
 
         // Show all markers:
@@ -137,13 +158,13 @@
 
             $outputController->addField("markers", $res);
 
-            $outputController->show(false);
+            $outputController->show(true);
 
         break;
 
         // Send emails to us:
         case 'landing_email':
-            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 0, "isDie" => true]);
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 6, "isDie" => true]);
         break;
 
         default:

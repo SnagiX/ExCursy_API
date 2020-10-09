@@ -59,9 +59,10 @@
                     "id" => $value["id"],
                     "info" => $this->tables["info"][$key],
                     "config" => $this->tables["config"][$key],
-                    "pattern" => $markerPattController->getMarkerPatternById($value["id"]),
                     "childnodes" => []
                 ];
+
+                $prepared[$key]["config"]["pattern_link"] = $markerPattController->getPatternLinkById($value["id"]);
 
                 // ChildNodes:
 
