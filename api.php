@@ -30,6 +30,16 @@
                     +==========
                     Id of responsed marker
 
+                "pattern_file_original" : text
+                Get original pattern (without json)
+
+                Attributes:
+
+                    +==========
+                    marker_id : int (from 1 to 30)
+                    +==========
+                    Id of responsed marker
+
                 "get_all_markers" : text
 
 

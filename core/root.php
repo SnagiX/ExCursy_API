@@ -62,9 +62,6 @@
 
     // =====================================================
 
-    // Apply our headers:
-    $outputController->applyHeaders();
-
     // Check if Db has no connection:
     if (!empty($dbController->errors)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 5, "isDie" => true]);
 
@@ -99,7 +96,7 @@
         // Let's decide, what the action we need to do:
         $responseController->typeOfResponse = $responseController->getAttrubuteValue("type", "get");
 
-        // If argument is empty, throw error:
+        // If TYPE argument is empty, throw error:
         if (!isset($responseController->typeOfResponse)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
 
     switch ($responseController->typeOfResponse) {
@@ -147,9 +144,28 @@
                 $outputController->show(true);
 
             }  
-
             $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
 
+        break;
+
+        // Show original pattern (without json):
+        case "pattern_file_original":
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+
+                $patt = $markerPattController->getMarkerPatternById($res);
+
+                $outputController->changeOutputFormat("text/html");
+
+                $outputController->textToOutput = "<pre>".$patt;
+
+                $outputController->show(true);
+            }
+
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+            
         break;
 
         // Show all markers:
