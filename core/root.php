@@ -24,6 +24,9 @@
         // Marker_patt:
         require_once SN_DIRECTORY_ROOT."core/controllers/MarkerPattController/MarkerPattController.php";
 
+        // Model controller:
+        require_once SN_DIRECTORY_ROOT."core/controllers/ModelController/ModelController.php";
+
     // Create controllers:
         
         // Response management:
@@ -51,6 +54,9 @@
 
         // Marker_patts:
         $markerPattController = new MarkerPattController();
+
+        // Models:
+        $modelController = new ModelController(SN_CONFIG["ModelController"]);
 
         // Db:
         $dbController = new DbController(SN_CONFIG["DbController"], [
@@ -166,6 +172,28 @@
 
             $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
             
+        break;
+        
+        // Show original model (without json):
+        case "model_original":
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+
+                $model = $modelController->getModel($res);
+
+                if (!$model) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 7, "isDie" => true]);
+
+                $outputController->changeOutputFormat("text/html");
+
+                $outputController->textToOutput = $model;
+
+                $outputController->show(true);
+            }
+
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+
         break;
 
         // Show all markers:

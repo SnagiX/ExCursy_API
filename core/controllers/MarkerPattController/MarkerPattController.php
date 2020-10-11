@@ -14,16 +14,16 @@
 
         public $maxPatternId;
 
-        public function __construct($flags = ["patternDirectory" => "assets/patt_files/", "patternExtension" => ".patt", "patternPrefix" => "pattern-", "maxPatternId" => 30]) {
+        public function __construct($args = ["patternDirectory" => "assets/patt_files/", "patternExtension" => ".patt", "patternPrefix" => "pattern-", "maxPatternId" => 30]) {
             
             // Set Pattern Extension:
-            $this->patternExtension = $flags["patternExtension"];
+            $this->patternExtension = $args["patternExtension"];
             // Set Pattern Directory:
-            $this->patternDirectory = $flags["patternDirectory"];
+            $this->patternDirectory = $args["patternDirectory"];
             // Set Pattern Prefix:
-            $this->patternPrefix = $flags["patternPrefix"];
+            $this->patternPrefix = $args["patternPrefix"];
             // Set Maximum Pattern Id:
-            $this->maxPatternId = $flags["maxPatternId"];
+            $this->maxPatternId = $args["maxPatternId"];
         }
 
         // Get marker by id (from 1 to 30)
@@ -44,7 +44,9 @@
             
             if ($id > $this->maxPatternId || $id < 1) return 0;
 
-            $link = SN_NETWORK_PROTOCOL."://".$_SERVER["HTTP_HOST"]."/".SN_DIRECTORY_WEBROOT.$this->patternDirectory.$this->patternPrefix.$id.$this->patternExtension;
+            // $link = SN_NETWORK_PROTOCOL."://".$_SERVER["HTTP_HOST"]."/".SN_DIRECTORY_WEBROOT.$this->patternDirectory.$this->patternPrefix.$id.$this->patternExtension;
+
+            $link = SN_NETWORK_PROTOCOL."://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?type=pattern_file_original&marker_id=".$id;
 
             if (file_exists($this->patternDirectory.$this->patternPrefix.$id.$this->patternExtension)) {
                 return $link;

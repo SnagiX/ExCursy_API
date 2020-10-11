@@ -40,6 +40,16 @@
                     +==========
                     Id of responsed marker
 
+                "model_original" : text
+                Get original model (without json)
+
+                Attributes:
+
+                    +==========
+                    marker_id : int (from 1 to 30)
+                    +==========
+                    Id of responsed marker
+
                 "get_all_markers" : text
 
 
@@ -54,7 +64,7 @@
     */
 
     // Enable this when you publishing api in master branch
-    error_reporting(0); 
+    error_reporting(0);
 
     // Turn on / off api:
     define("SN_API_ON", true);
