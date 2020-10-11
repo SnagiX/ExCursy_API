@@ -165,6 +165,8 @@
 
                 $outputController->changeOutputFormat("text/html");
 
+                $outputController->applyHeaders();
+
                 $outputController->textToOutput = "<pre>".$patt;
 
                 $outputController->show(true);
@@ -186,6 +188,8 @@
                 if (!$model) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 7, "isDie" => true]);
 
                 $outputController->changeOutputFormat("text/html");
+
+                $outputController->applyHeaders();
 
                 $outputController->textToOutput = $model;
 
