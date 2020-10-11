@@ -104,6 +104,7 @@
             // Die
 
             $this->dieCondition($isDie);
+            return 1;
         }
 
 
