@@ -5,6 +5,7 @@
         "3": "marker_id value excepts",
         "4": "Wrong language parameter",
         "5": "Internal server error",
-        "6": "Function is unavailable"
+        "6": "Function is unavailable",
+        "7": "Marker doesn't exists"
     }
 }

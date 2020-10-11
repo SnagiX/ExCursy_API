@@ -24,6 +24,9 @@
         // Marker_patt:
         require_once SN_DIRECTORY_ROOT."core/controllers/MarkerPattController/MarkerPattController.php";
 
+        // Model controller:
+        require_once SN_DIRECTORY_ROOT."core/controllers/ModelController/ModelController.php";
+
     // Create controllers:
         
         // Response management:
@@ -52,6 +55,9 @@
         // Marker_patts:
         $markerPattController = new MarkerPattController();
 
+        // Models:
+        $modelController = new ModelController(SN_CONFIG["ModelController"]);
+
         // Db:
         $dbController = new DbController(SN_CONFIG["DbController"], [
             "root" => "",
@@ -61,9 +67,6 @@
         ]);
 
     // =====================================================
-
-    // Apply our headers:
-    $outputController->applyHeaders();
 
     // Check if Db has no connection:
     if (!empty($dbController->errors)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 5, "isDie" => true]);
@@ -99,7 +102,7 @@
         // Let's decide, what the action we need to do:
         $responseController->typeOfResponse = $responseController->getAttrubuteValue("type", "get");
 
-        // If argument is empty, throw error:
+        // If TYPE argument is empty, throw error:
         if (!isset($responseController->typeOfResponse)) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 1, "isDie" => true]);
 
     switch ($responseController->typeOfResponse) {
@@ -147,6 +150,47 @@
                 $outputController->show(true);
 
             }  
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+
+        break;
+
+        // Show original pattern (without json):
+        case "pattern_file_original":
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+
+                $patt = $markerPattController->getMarkerPatternById($res);
+
+                $outputController->changeOutputFormat("text/html");
+
+                $outputController->textToOutput = "<pre>".$patt;
+
+                $outputController->show(true);
+            }
+
+            $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
+            
+        break;
+        
+        // Show original model (without json):
+        case "model_original":
+
+            $res = $responseController->getAttrubuteValue("marker_id", "get");
+
+            if ($res != null && filter_var($res, FILTER_VALIDATE_INT)) {
+
+                $model = $modelController->getModel($res);
+
+                if (!$model) $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 7, "isDie" => true]);
+
+                $outputController->changeOutputFormat("text/html");
+
+                $outputController->textToOutput = $model;
+
+                $outputController->show(true);
+            }
 
             $outputController->throwError(["arr" => $langController->lang["errors"], "code" => 3, "isDie" => true]);
 

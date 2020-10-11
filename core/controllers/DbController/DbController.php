@@ -51,6 +51,8 @@
 
             $markerPattController = new MarkerPattController();
 
+            $modelController = new ModelController(SN_CONFIG["ModelController"]);
+
             $prepared = [];
 
             foreach ($this->tables["root"] as $key => $value) {
@@ -63,6 +65,8 @@
                 ];
 
                 $prepared[$key]["config"]["pattern_link"] = $markerPattController->getPatternLinkById($value["id"]);
+
+                $prepared[$key]["config"]["model_link"] = $modelController->getLink($value["id"]);
 
                 // ChildNodes:
 

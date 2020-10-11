@@ -25,5 +25,9 @@
             "en", "ru"
         ],
         "default_lang": "en"
+    },
+    "ModelController": {
+        "modelDirectory": "assets/id/",
+        "modelPrefix": "m"
     }
 }

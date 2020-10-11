@@ -2,7 +2,12 @@
 
     class OutputController extends SnController {
 
-        public $outputFormat = "text/json";
+        //
+        // PUBLIC VARIABLES
+        //
+
+        // Set Output Format (text/json, text/html)
+        public $outputFormat;
 
         public $headers = [];
 
@@ -62,15 +67,39 @@
         // Show prepared textToOutput:
         public function show($isDie = true) {
 
+            // Some functions:
+
+            function show($content) {
+
+                if (is_array($content)) {
+                    print_r($content);
+                    return 1;
+                }
+
+                echo $content;
+                return 1;
+            }
+
             // Preparing to show:
 
             $out = $this->textToOutput;
 
-            if (empty($out["type"])) $out["type"] = "response";
-
-            if ($this->outputFormat = "text/json") {
-                echo json_encode($out);
+            switch ($this->outputFormat) {
+                case "text/json":
+                    if (empty($out["type"])) $out["type"] = "response";
+                    show(json_encode($out));
+                break;
+                case 'text/html':
+                    show($out);
+                break;
+                default:
+                    show("SERVER ERROR - INCORRECT OUTPUT FORMAT");
+                break;
             }
+
+            // Apply headers:
+
+            $this->applyHeaders();
 
             // Die
 
@@ -113,6 +142,10 @@
             if ($this->outputFormat = "text/json") {
                 echo json_encode($this->textToOutput);
             }
+
+            // Apply headers:
+
+            $this->applyHeaders();
 
             // Die
 
