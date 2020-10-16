@@ -14,7 +14,7 @@
 
         public $maxPatternId;
 
-        public function __construct($args = ["patternDirectory" => "assets/patt_files/", "patternExtension" => ".patt", "patternPrefix" => "pattern-", "maxPatternId" => 30]) {
+        public function __construct($args = ["patternDirectory" => "assets/patt_files/", "patternExtension" => ".patt", "patternPrefix" => "pattern-", "maxPatternId" => 70]) {
             
             // Set Pattern Extension:
             $this->patternExtension = $args["patternExtension"];
