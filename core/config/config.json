@@ -29,5 +29,11 @@
     "ModelController": {
         "modelDirectory": "assets/id/",
         "modelPrefix": "m"
+    },
+    "MarkerPattController": {
+        "patternDirectory": "assets/patt_files/",
+        "patternExtension": ".patt",
+        "patternPrefix": "pattern-",
+        "maxPatternId": 70
     }
 }
