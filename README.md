@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/SnagiX/ExCursy_API/master/assets/img/logo/FHD%20ExCursy%20API%20Logo%20Light.png)
 ExCursy API - changeable micro-framework for web AR-applications, which based on PHP (MVC architecture).
-Front-end AR applications should be created on AR.js library (see ExKyrsia project)
+Front-end AR applications should be created on AR.js library (see ExCursy project)
 
 ## Installation
 1. Put code into your folder
