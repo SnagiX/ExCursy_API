@@ -1,4 +1,4 @@
-# ExKyrsia_API
+# ExCursy API
 ExKyrisa API - changeable micro-framework for web AR-applications, which based on PHP (MVC architecture).
 Front-end AR applications should be created on AR.js library (see ExKyrsia project)
 
