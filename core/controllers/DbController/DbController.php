@@ -49,7 +49,7 @@
             $this->tables["config"] = dbObject::table("sn_exkyrsia_config")::ArrayBuilder()->get();
             $this->tables["info"] = dbObject::table("sn_exkyrsia_info")::ArrayBuilder()->get();
 
-            $markerPattController = new MarkerPattController();
+            $markerPattController = new MarkerPattController(SN_CONFIG["MarkerPattController"]);
 
             $modelController = new ModelController(SN_CONFIG["ModelController"]);
 
@@ -72,8 +72,7 @@
 
                 foreach ($this->tables["childnodes"] as $c_key => $c_val) {
                     if ($value["id"] == $c_val["id"]) {
-                        $prepared[$key]["childnodes"][$c_key] = [];
-                        $prepared[$key]["childnodes"][$c_key] += $c_val;
+                        array_push($prepared[$key]["childnodes"], $c_val);
                     }
                 }
 
