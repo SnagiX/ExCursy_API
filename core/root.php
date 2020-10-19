@@ -53,7 +53,7 @@
         $langController = new LangController(SN_CONFIG["LangController"]);
 
         // Marker_patts:
-        $markerPattController = new MarkerPattController();
+        $markerPattController = new MarkerPattController(SN_CONFIG["MarkerPattController"]);
 
         // Models:
         $modelController = new ModelController(SN_CONFIG["ModelController"]);
